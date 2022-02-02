@@ -2,6 +2,7 @@ package com.oldgoat5.piggybank.api
 
 import com.oldgoat5.piggybank.contract.Abi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.future.await
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.web3j.crypto.Credentials
@@ -28,7 +29,7 @@ class ContractService @Inject constructor() {
         )
 
         try {
-            val clientVersion: Web3ClientVersion = web3j.web3ClientVersion().sendAsync().get()
+            val clientVersion: Web3ClientVersion = web3j.web3ClientVersion().sendAsync().await()
             if (!clientVersion.hasError()) {
                 //Toast.makeText(context, "connected to polygon-mumbai testnet", Toast.LENGTH_SHORT).show()
             } else {
@@ -60,7 +61,7 @@ class ContractService @Inject constructor() {
 
     suspend fun about(): String {
         return withContext(Dispatchers.IO) {
-            connected.get(30, TimeUnit.SECONDS)
+            connected.await()
             piggyBankContract.about().send()
         }
     }
