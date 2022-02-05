@@ -1,24 +1,17 @@
 package com.oldgoat5.piggybank.ui
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
-import android.widget.Toast.LENGTH_SHORT
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.oldgoat5.piggybank.contract.Abi
 import com.oldgoat5.piggybank.R
 import com.oldgoat5.piggybank.common.ViewModelActivity
 import com.walletconnect.walletconnectv2.client.WalletConnect
 import com.walletconnect.walletconnectv2.client.WalletConnectClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.core.methods.response.Web3ClientVersion
-import org.web3j.protocol.http.HttpService
-import java.math.BigInteger
 
 @AndroidEntryPoint
 class MainActivity : ViewModelActivity<MainViewModel>(), WalletConnectClient.DappDelegate {
@@ -36,10 +29,24 @@ class MainActivity : ViewModelActivity<MainViewModel>(), WalletConnectClient.Dap
         setContentView(R.layout.activity_main)
 
         titleTextView = findViewById(R.id.title_text_view)
+        val bankBalanceTextView = findViewById<TextView>(R.id.bank_balance_text_view)
+        val myBalanceTextView = findViewById<TextView>(R.id.my_balance_text_view)
+        val depositEditText = findViewById<EditText>(R.id.deposit_edit_text)
+        val depositButton = findViewById<Button>(R.id.deposit_button)
 
         lifecycleScope.launch {
             titleTextView.text = viewModel.getAboutText()
+            bankBalanceTextView.text = viewModel.getBankBalance().toString(10)
+            myBalanceTextView.text = viewModel.getMyBalance().toString(10)
         }
+
+        depositButton.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.deposit(Integer.parseInt(depositEditText.text.toString()))
+            }
+        }
+
+
     }
 
     /**

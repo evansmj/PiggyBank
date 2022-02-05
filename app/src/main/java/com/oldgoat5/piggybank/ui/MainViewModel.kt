@@ -1,20 +1,13 @@
 package com.oldgoat5.piggybank.ui
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import com.oldgoat5.piggybank.api.ContractInteractor
 import com.oldgoat5.piggybank.common.PiggyBankViewModel
-import com.oldgoat5.piggybank.contract.Abi
 import com.walletconnect.walletconnectv2.client.WalletConnectClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.core.methods.response.Web3ClientVersion
-import org.web3j.protocol.http.HttpService
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -41,6 +34,18 @@ class MainViewModel @Inject constructor(
 
     suspend fun getAboutText(): String {
         return contractInteractor.about()
+    }
+
+    suspend fun getBankBalance(): BigInteger {
+        return contractInteractor.getBankBalance()
+    }
+
+    suspend fun deposit(wei: Int): Boolean {
+        return contractInteractor.deposit(wei)
+    }
+
+    suspend fun getMyBalance(): BigInteger {
+        return contractInteractor.getMyBalance()
     }
 
 }

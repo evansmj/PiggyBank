@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PiggyBank</string>
+    <string name="bank_balance">Bank Balance:</string>
+    <string name="my_balance">My balance:</string>
+    <string name="wei_to_send">wei to send</string>
+    <string name="deposit">Deposit</string>
 </resources>

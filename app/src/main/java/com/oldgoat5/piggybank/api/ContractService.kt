@@ -3,18 +3,14 @@ package com.oldgoat5.piggybank.api
 import com.oldgoat5.piggybank.contract.Abi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.future.await
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
+import org.web3j.protocol.core.DefaultBlockParameter
 import org.web3j.protocol.core.methods.response.Web3ClientVersion
 import org.web3j.protocol.http.HttpService
-import java.lang.NullPointerException
-import java.lang.RuntimeException
 import java.math.BigInteger
-import java.util.Calendar.SECOND
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ContractService @Inject constructor() {
@@ -22,9 +18,10 @@ class ContractService @Inject constructor() {
     private lateinit var piggyBankContract: Abi
 
     private var connected: CompletableFuture<Boolean> = CompletableFuture()
+    private lateinit var web3j: Web3j
 
     suspend fun connectToBlockchain() {
-        val web3j: Web3j = Web3j.build(
+        this.web3j = Web3j.build(
             HttpService("https://rpc-mumbai.maticvigil.com/v1/5009bc6ba430089a012a96d301f7287ae153f36f")
         )
 
@@ -63,6 +60,27 @@ class ContractService @Inject constructor() {
         return withContext(Dispatchers.IO) {
             connected.await()
             piggyBankContract.about().send()
+        }
+    }
+
+    suspend fun getBankBalance(): BigInteger {
+        return withContext(Dispatchers.IO) {
+            connected.await()
+            piggyBankContract.bankBalance().send()
+        }
+    }
+
+    suspend fun deposit(wei: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            connected.await()
+            piggyBankContract.deposit().send().isStatusOK
+        }
+    }
+
+    suspend fun getMyBalance(): BigInteger {
+        return withContext(Dispatchers.IO) {
+            connected.await()
+            web3j.ethGetBalance("0xe70d5BC7bB9d6eD4110ea113eDBDcFC022731e35", DefaultBlockParameter.valueOf("latest")).send().balance
         }
     }
 }

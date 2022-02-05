@@ -10,10 +10,55 @@
         android:id="@+id/title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bank_balance_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bank_balance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bank_balance_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/bank_balance_label_text_view"
+        app:layout_constraintStart_toEndOf="@id/bank_balance_label_text_view" />
+
+    <TextView
+        android:id="@+id/my_balance_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_balance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bank_balance_label_text_view" />
+
+    <TextView
+        android:id="@+id/my_balance_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/my_balance_label_text_view"
+        app:layout_constraintStart_toEndOf="@id/my_balance_label_text_view" />
+
+    <EditText
+        android:id="@+id/deposit_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/wei_to_send"
+        android:inputType="number"
+        android:importantForAutofill="no"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/my_balance_label_text_view" />
+
+    <Button
+        android:id="@+id/deposit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deposit"
+        app:layout_constraintStart_toEndOf="@id/deposit_edit_text"
+        app:layout_constraintBaseline_toBaselineOf="@id/deposit_edit_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
